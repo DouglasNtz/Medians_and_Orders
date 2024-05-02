@@ -13,8 +13,12 @@ Número de experimentos: 100
 Tamanho da lista de números: 5000
 Tempo total: 2.028µs
 
-Function: Select n-ésimo
+Function: Rand-select n-ésimo
 Número de experimentos: 100
 Tamanho da lista de números: 5000
 Tempo total: 4.353141ms
 
+Function: Select n-ésimo
+Número de experimentos: 100
+Tamanho da lista de números: 5000
+Tempo total: 4.3019ms

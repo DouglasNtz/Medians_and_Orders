@@ -234,7 +234,7 @@ pub fn randomized_select<T: PartialOrd + Copy>(v: &[T], rank: usize) -> T {  // 
 
     // seleciona um elementp dp índice i_left até i_right (último elemento)
 
-    let mut i_rand = random::<usize>() % vlen;
+    let i_rand = random::<usize>() % vlen;
 
     let mut vleft = Vec::<T>::with_capacity(vlen);
 
@@ -301,7 +301,7 @@ fn randomized_select_proof_stability<T: PartialOrd + Copy>(v: &[(T, usize)], ran
 
     // seleciona um elementp dp índice i_left até i_right (último elemento)
 
-    let mut i_rand = random::<usize>() % vlen;
+    let i_rand = random::<usize>() % vlen;
 
     let mut vleft = Vec::<(T, usize)>::with_capacity(vlen);
 
@@ -352,5 +352,120 @@ fn randomized_select_proof_stability<T: PartialOrd + Copy>(v: &[(T, usize)], ran
     }
 
     randomized_select_proof_stability(&w, i_rank + 1)
+
+}
+
+pub fn ith_select<T: PartialOrd + Copy>(v: &[T], rank: usize) -> T {  // retornna o elemento de índice rank - 1 do vetor ordenado
+
+    let vlen = v.len();
+
+    if rank > vlen {
+        panic!("A sequência possui {vlen} elementos e portanto não pode possuir um {rank}-ésimo elemento");
+    }
+
+    let mut i_rank = rank - 1; // índice que de fato queremos (da versão parcialmente ordenada)
+
+    // seleciona um elementp dp índice i_left até i_right (último elemento)
+
+    let i_pivot = vlen - 1;
+
+    let mut vleft = Vec::<T>::with_capacity(vlen);
+
+    let mut vright = Vec::<T>::with_capacity(vlen);
+
+    // Do jeito que faremos, o algoritmo será estável. Foi um caso pensado para ser estável.
+
+    for k in 0..i_pivot {
+
+        if v[k] <= v[i_pivot] {
+            vleft.push(v[k]);
+        } else {
+            vright.push(v[k]);
+        }
+    }
+
+    if vleft.len() == i_rank {
+
+        return v[i_pivot]
+
+    }
+
+    let mut w = Vec::with_capacity(vlen);
+
+    if vleft.len() < i_rank {
+
+        i_rank = i_rank - vleft.len() - 1;
+
+        vleft.clear();
+
+        w.append(&mut vright);
+
+    } else {
+
+        vright.clear();
+
+        w.append(&mut vleft);
+
+    }
+
+    crate::randomized_select(&w, i_rank + 1)
+
+}
+
+fn ith_select_proof_stability<T: PartialOrd + Copy>(v: &[(T, usize)], rank: usize) -> (T, usize) {
+// retornna o elemento de índice rank - 1 do vetor ordenado
+
+    let vlen = v.len();
+
+    if rank > vlen {
+        panic!("A sequência possui {vlen} elementos e portanto não pode possuir um {rank}-ésimo elemento");
+    }
+
+    let mut i_rank = rank - 1; // índice que de fato queremos (da versão parcialmente ordenada)
+
+    // seleciona um elementp dp índice i_left até i_right (último elemento)
+
+    let i_pivot = vlen - 1;
+
+    let mut vleft = Vec::<(T, usize)>::with_capacity(vlen);
+
+    let mut vright = Vec::<(T, usize)>::with_capacity(vlen);
+
+    // Do jeito que faremos, o algoritmo será estável. Foi um caso pensado para ser estável.
+
+    for k in 0..i_pivot {
+
+        if v[k].0 <= v[i_pivot].0 {
+            vleft.push(v[k]);
+        } else {
+            vright.push(v[k]);
+        }
+    }
+
+    if vleft.len() == i_rank {
+
+        return v[i_pivot]
+
+    }
+
+    let mut w = Vec::<(T, usize)>::with_capacity(vlen);
+
+    if vleft.len() < i_rank {
+
+        i_rank = i_rank - vleft.len() - 1;
+
+        vleft.clear();
+
+        w.append(&mut vright);
+
+    } else {
+
+        vright.clear();
+
+        w.append(&mut vleft);
+
+    }
+
+    crate::randomized_select_proof_stability(&w, i_rank + 1)
 
 }
