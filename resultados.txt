@@ -1,0 +1,20 @@
+Function: Mínimo
+Número de experimentos: 100
+Tamanho da lista de números: 5000
+Tempo total: 2.344µs
+
+Function: Máximo
+Número de experimentos: 100
+Tamanho da lista de números: 5000
+Tempo total: 2.311µs
+
+Function: Mínimo-Máximo
+Número de experimentos: 100
+Tamanho da lista de números: 5000
+Tempo total: 2.028µs
+
+Function: Select n-ésimo
+Número de experimentos: 100
+Tamanho da lista de números: 5000
+Tempo total: 4.353141ms
+
